@@ -19,7 +19,7 @@ def workspace(id,password):
     return render_template('signup.html',id=id,password=password)
 
 @app.route('/view/<id>')
-def workspace(id):
+def view(id):
     print(id, file=sys.stdout)
     #if id is in database, then continue, otherwise redirect to 404 error
     return render_template('signup.html',id=id)
