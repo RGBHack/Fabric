@@ -16,7 +16,7 @@
 ## 🚀 Local Development
 
 ```sh
-git clone https://github.com/RGBHack/Spark.git
+git clone https://github.com/RGBHack/Fabric.git
 pip install -r requirements.txt
 python app.py
 ```
