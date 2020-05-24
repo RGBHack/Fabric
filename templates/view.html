@@ -1,18 +1,21 @@
+<link rel='icon' href="{{ url_for('static', filename='favicon.png') }}"/>
+
 I am viewing on {{ id }}
+
+<br>
 
 <canvas id="can" width="1000px" height="1000px" style="position:relative;top:10%;border:2px solid;"></canvas>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
-        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I="
-        crossorigin="anonymous"></script>
+        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
 
-<script src="https://cdn.jsdelivr.net/gh/over-engineer/Socket.io-whiteboard/lib/latest/whiteboard.js" 
-        integrity="sha384-0SpYdGaHioGkmKzEXMXv+KuDDa9JxaQKrUyAnfocU3GxV8206NHFkT6qlRZh/Kpk" 
+<script src="https://cdn.jsdelivr.net/gh/over-engineer/Socket.io-whiteboard/lib/latest/whiteboard.js"
+        integrity="sha384-0SpYdGaHioGkmKzEXMXv+KuDDa9JxaQKrUyAnfocU3GxV8206NHFkT6qlRZh/Kpk"
         crossorigin="anonymous"></script>
 
 <script>
-var socket = io();
-const canvas = document.querySelector('canvas');
-const whiteboard = new Whiteboard(canvas, socket);
-window.whiteboard = whiteboard
+        var socket = io();
+        const canvas = document.querySelector('canvas');
+        const whiteboard = new Whiteboard(canvas, socket);
+        window.whiteboard = whiteboard
 </script>
