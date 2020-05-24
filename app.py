@@ -1,12 +1,15 @@
-from flask import Flask, render_template, make_response
+from flask import Flask, render_template, make_response, redirect
 import os
 import time
 import sys
 from werkzeug.routing import BaseConverter
+import random
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
 
 rooms = []
+num = 0
 
 class RegexConverter(BaseConverter):
     def __init__(self, url_map, *items):
@@ -39,6 +42,13 @@ def index():
 def draw():
     context = { 'server_time': format_server_time() }
     return render_template('about.html', context=context)
+
+@app.route('/create')
+def create():
+    num = num+1
+    num2 = random.randrange(99999)
+    sessionid = str(num)+str(num2)
+    
 
 if __name__ == '__main__':
     app.run(debug=True,port=int(os.environ.get('PORT', 5004)))

@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Nova+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&family=Nova+Mono&display=swap"
+        rel="stylesheet">
     <title>Fabric</title>
 </head>
 
@@ -14,10 +15,11 @@
 
     <style>
         body {
-            font-family: 'Nova Mono', monospace;
+            font-family: 'Fira Code', monospace;
         }
 
         nav {
+            font-family: 'Nova Mono', monospace;
             background: rgb(33, 148, 249);
             background: linear-gradient(90deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
         }
@@ -29,10 +31,12 @@
         .navbar-light .navbar-nav .nav-link {
             color: white;
             font-size: 2rem;
+            margin-right: 20px;
         }
 
         .navbar-light .navbar-nav .nav-link:hover {
             color: white;
+            margin-right: 20px;
         }
 
         .active {
@@ -87,11 +91,34 @@
             margin-top: auto;
         }
 
+        .session-btn {
+            border: none;
+            background-color: #48a9ffff;
+            background: linear-gradient(90deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
+            color: white;
+            width: 100%;
+            font-size: 2rem;
+            border-radius: 20px;
+        }
+
+        .session-btn:hover {
+            box-shadow: 5px 10px 20px #888888;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(90deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
+        }
+
         .gradient {
             background: linear-gradient(90deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        ::placeholder {
+            color: white;
+            opacity: 1;
         }
 
         /* width */
@@ -124,7 +151,7 @@
         <a class="navbar-brand" href="#">
             <svg height="60" width="60">
                 <circle cx="30" cy="30" r="20" stroke="white" stroke-width="3" fill="none" />
-            </svg>Fabric</a>
+            </svg>FABRIC</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -133,10 +160,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Home</a>
+                    <a class="nav-link active" href="#">HOME</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/about">About</a>
+                    <a class="nav-link active" href="/about">ABOUT</a>
                 </li>
             </ul>
         </div>
@@ -146,9 +173,32 @@
     <div class="parallelogram-purple"></div>
 
     <div class="main-text">
-        <h1>start session</h1>
+        <button class="session-btn">Start Session</button>
         <h1>or</h1>
-        <h1>join session</h1>
+        <button type="button" data-toggle="modal" data-target="#exampleModal" class="session-btn">Join Session</button>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Enter session ID</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <input type="text" id="fname" name="fname" style="width: 100%;"><br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Join Session">
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
