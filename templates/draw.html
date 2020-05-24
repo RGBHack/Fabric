@@ -191,7 +191,7 @@ tea {
 }
 
 </style>
-        <div style="border-radius: 0px;border-color: white; background-color: white;"><button class="color-picker" style="padding:0; border: none;"><img src="../static/wheel.png" style="width: 40px; height: 40px; margin: 0;"></button></div>
+        <div style="border-radius: 0px;border-color: transparent; background-color: transparent;"><button class="color-picker" style="padding:0; border: none;"><img src="../static/wheel.png" style="width: 40px; height: 40px; margin: 0;"></button></div>
         <div class="color red"></div>
         <div class="color orange"></div>
         <div class="color yellow"></div>
@@ -199,6 +199,8 @@ tea {
         <div class="color blue"></div>
         <div class="color purple"></div>
         <div class="erase" style="border-radius: 0px;border-color: white; background-color: white;"><button class="color white" style="padding:0; border: none;"><img src="../static/eraser.png" style="width: 40px; height: 40px; margin: 0;"></button></div>
+        <div class="erase" style="border-radius: 0px;border-color: white; background-color: white;" data-toggle="modal"
+        data-target="#filePicker"><button class="color white" style="padding:0; border: none;"><img src="../static/upload.jpg" style="width: 40px; height: 40px; margin: 0;"></button></div>
         <div class="clear" id="clear-btn" style="background-color: white;">
           <div style="padding-top: 10px;">
             <img src="../static/trashcan.png">
@@ -275,6 +277,70 @@ tea {
             </div>
             <div>Session ID: {{ id }}</div>
           </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="filePicker"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Custom Background
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="validatedCustomFile" required>
+              <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+
+            </div>
+            <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+            <script>
+              $('#validatedCustomFile').on('change',function(){
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+
+                var file = $(this)[0].files[0];
+                console.log(file)
+
+                var reader = new FileReader();
+                reader.onloadend = function(){
+                  document.getElementsByClassName('whiteboard')[0].style.background = "url(" + reader.result + ")"; 
+                }
+                if(file) {
+                  reader.readAsDataURL(file);
+                }
+              })
+          </script>
           <div class="modal-footer">
             <button
               type="button"
