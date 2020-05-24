@@ -41,26 +41,44 @@
         }
 
         .parallelogram-blue {
-            width: 20vw;
-            height: 30vh;
+            width: 25vw;
+            height: 35vh;
             transform: skew(20deg);
             background: #48a9ffff;
             margin-left: 10vw;
             margin-top: 20vh;
+            margin-right: 0;
         }
 
         .parallelogram-purple {
-            width: 20vw;
-            height: 30vh;
+            width: 25vw;
+            height: 35vh;
             transform: skew(20deg);
             background: #b042ff7b;
             margin-left: 15vw;
             margin-top: -25vh;
+            margin-right: 0;
+        }
+
+        .main-text {
+            width: 20vw;
+            height: 30vh;
+            background: white;
+            margin-top: -40vh;
+            margin-right: 10vw;
+            float: right;
+            text-align: center;
+            border-radius: 30px;
+            box-shadow: 5px 10px 18px #888888;
+        }
+
+        .main-text h1 {
+            margin: auto;
+            margin-top: auto;
         }
 
         .gradient {
             background: linear-gradient(90deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
-            ;
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -109,9 +127,6 @@
                     <a class="nav-link" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Join</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
                 </li>
             </ul>
@@ -120,6 +135,12 @@
 
     <div class="parallelogram-blue"></div>
     <div class="parallelogram-purple"></div>
+
+    <div class="main-text">
+        <h1>start session</h1>
+        <h1>or</h1>
+        <h1>join session</h1>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">

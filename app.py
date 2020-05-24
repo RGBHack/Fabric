@@ -6,22 +6,25 @@ from werkzeug.routing import BaseConverter
 
 app = Flask(__name__)
 
-# class RegexConverter(BaseConverter):
-#     def __init__(self, url_map, *items):
-#         super(RegexConverter, self).__init__(url_map)
-#         self.regex = items[0]
-# # app.url_map.converters['regex'] = RegexConverter
-# @app.route('/admin/<id>:<password>')
-# def workspace(id,password):
-#     print(id, file=sys.stdout)
-#     #if id is in database, then continue, otherwise redirect to 404 error
-#     return render_template('signup.html',id=id,password=password)
+rooms = []
 
-# @app.route('/view/<id>')
-# def view(id):
-#     print(id, file=sys.stdout)
-#     #if id is in database, then continue, otherwise redirect to 404 error
-#     return render_template('signup.html',id=id)
+class RegexConverter(BaseConverter):
+    def __init__(self, url_map, *items):
+        super(RegexConverter, self).__init__(url_map)
+        self.regex = items[0]
+app.url_map.converters['regex'] = RegexConverter
+
+@app.route('/admin/<id>:<password>')
+def admin(id,password):
+    print(id, file=sys.stdout)
+    #if id is in database, then continue, otherwise redirect to 404 error
+    return render_template('draw.html',id=id,password=password)
+
+@app.route('/view/<id>')
+def view(id):
+    print(id, file=sys.stdout)
+    #if id is in database, then continue, otherwise redirect to 404 error
+    return render_template('view.html',id=id)
 
 def format_server_time():
    server_time = time.localtime()
