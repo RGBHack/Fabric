@@ -9,59 +9,96 @@ import json
 
 app = Flask(__name__)
 
-rooms = []
+sessions = []
 num = 0
 socketio = SocketIO(app)
+datas = []
+
 
 class RegexConverter(BaseConverter):
     def __init__(self, url_map, *items):
         super(RegexConverter, self).__init__(url_map)
         self.regex = items[0]
+
+
 app.url_map.converters['regex'] = RegexConverter
 
+
 @app.route('/admin/<id>:<password>')
-def admin(id,password):
+def admin(id, password):
     print(id, file=sys.stdout)
-    #if id is in database, then continue, otherwise redirect to 404 error
-    return render_template('draw.html',id=id,password=password)
+    # if id is in database, then continue, otherwise redirect to 404 error
+    return render_template('draw.html', id=id, password=password)
+
 
 @app.route('/view/<id>')
 def view(id):
     print(id, file=sys.stdout)
-    #if id is in database, then continue, otherwise redirect to 404 error
-    return render_template('view.html',id=id)
+    # if id is in database, then continue, otherwise redirect to 404 error
+    return render_template('view.html', id=id)
+
 
 def format_server_time():
-   server_time = time.localtime()
-   return time.strftime("%I:%M:%S %p", server_time)
+    server_time = time.localtime()
+    return time.strftime("%I:%M:%S %p", server_time)
+
 
 @app.route('/')
 def index():
-    context = { 'server_time': format_server_time() }
+    context = {'server_time': format_server_time()}
     return render_template('index.html', context=context)
 
+
 @app.route('/about')
-def draw():
-    context = { 'server_time': format_server_time() }
+def about():
+    context = {'server_time': format_server_time()}
     return render_template('about.html', context=context)
+
 
 @app.route('/create')
 def create():
-    num = num+1
+    global num
+    num += 1
     num2 = random.randrange(99999)
+    password = str(random.randrange(99999999))
     sessionid = str(num)+str(num2)
-    
+    sessions.append({"session": sessionid, "password": password})
+    return redirect('/admin/'+sessionid+':'+password)
+
+
 @socketio.on('connection')
 def connection(socket):
     print("Client #"+str(socket.id)+"Has connected")
 
+
 @socketio.on('DRAW')
 def draw(data):
-    emit('DRAW',data,broadcast=True)
+    emit('DRAW', data, broadcast=True)
+
 
 @socketio.on('DRAW_BEGIN_PATH')
 def draw_begin_path():
-    emit('DRAW_BEGIN_PATH',broadcast=True)
+    emit('DRAW_BEGIN_PATH', broadcast=True)
+
+
+@socketio.on('drawing')
+def drawing(data):
+    global datas
+    datas.append(data)
+    emit('drawing', data, broadcast=True)
+
+
+@socketio.on('connect')
+def onconnection():
+    global datas
+    for i in datas:
+        emit('drawing', i)
+
+
+@socketio.on('clear')
+def onclear():
+    emit('clear')
+
 
 if __name__ == '__main__':
-    socketio.run(app,debug=True,port=int(os.environ.get('PORT', 5004)))
+    socketio.run(app, debug=True, port=int(os.environ.get('PORT', 5004)))
