@@ -88,8 +88,12 @@ def create():
     def chat(data):
         data2 = pf.censor(data["content"])
         data["content"] = data2
-        emit('chat_'+sessionid,data,broadcast=True)
         global sessions
+        if data["person"] == "Instructor":
+            if data["password"] != sessions[sessionid]["password"]:
+                return
+        data["password"] = ""
+        emit('chat_'+sessionid,data,broadcast=True)
         sessions[sessionid]["messages"].append(data)
 
     return redirect('/admin/'+sessionid+':'+password)

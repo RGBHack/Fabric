@@ -493,7 +493,7 @@ tea {
         socket.emit("connecteda", "{{ id }}");
         document.getElementById("msg-form").onsubmit = (e) => {
             e.preventDefault()
-            socket.emit("chat_{{ id }}",{"person": "Instructor", "content" : document.getElementById("msg-txt").value})
+            socket.emit("chat_{{ id }}",{"person": "Instructor", "content" : document.getElementById("msg-txt").value, "password": "{{ password }}"})
             document.getElementById("msg-txt").value = ''
         }
         socket.on("chat_{{ id }}", function (data) {
