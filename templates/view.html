@@ -11,7 +11,7 @@ I am viewing on {{ id }}
         crossorigin="anonymous"></script>
 
 <script>
-var socket = io.connect('http://' + document.domain + ':' + location.port);
+var socket = io();
 const canvas = document.querySelector('canvas');
 const whiteboard = new Whiteboard(canvas, socket);
 window.whiteboard = whiteboard
