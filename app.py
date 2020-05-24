@@ -4,7 +4,7 @@ import time
 import sys
 from werkzeug.routing import BaseConverter
 import random
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, send, emit
 import json
 
 app = Flask(__name__)
@@ -51,6 +51,17 @@ def create():
     num2 = random.randrange(99999)
     sessionid = str(num)+str(num2)
     
+@socketio.on('connection')
+def connection(socket):
+    print("Client #"+str(socket.id)+"Has connected")
+
+@socketio.on('DRAW')
+def draw(data):
+    emit('DRAW',data,broadcast=True)
+
+@socketio.on('DRAW_BEGIN_PATH')
+def draw_begin_path():
+    emit('DRAW_BEGIN_PATH',broadcast=True)
 
 if __name__ == '__main__':
-    socketio.run(debug=True,port=int(os.environ.get('PORT', 5004)))
+    socketio.run(app,debug=True,port=int(os.environ.get('PORT', 5004)))
