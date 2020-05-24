@@ -9,7 +9,7 @@ import json
 
 app = Flask(__name__)
 
-sessions = []
+sessions = {}
 num = 0
 socketio = SocketIO(app)
 datas = []
@@ -27,14 +27,21 @@ app.url_map.converters['regex'] = RegexConverter
 @app.route('/admin/<id>:<password>')
 def admin(id, password):
     print(id, file=sys.stdout)
-    # if id is in database, then continue, otherwise redirect to 404 error
+    if not id in sessions:
+        return redirect('/404')
+    if sessions[id]['password'] != password:
+        return redirect('/view/'+id)
     return render_template('draw.html', id=id, password=password)
 
+@app.route('/404')
+def four ():
+    return render_template('404.html')
 
 @app.route('/view/<id>')
 def view(id):
     print(id, file=sys.stdout)
-    # if id is in database, then continue, otherwise redirect to 404 error
+    if not id in sessions:
+        return redirect('/404')
     return render_template('view.html', id=id)
 
 
@@ -62,23 +69,13 @@ def create():
     num2 = random.randrange(99999)
     password = str(random.randrange(99999999))
     sessionid = str(num)+str(num2)
-    sessions.append({"session": sessionid, "password": password})
+    sessions[sessionid] = {"session": sessionid, "password": password, "data": []}
     return redirect('/admin/'+sessionid+':'+password)
 
 
 @socketio.on('connection')
 def connection(socket):
     print("Client #"+str(socket.id)+"Has connected")
-
-
-@socketio.on('DRAW')
-def draw(data):
-    emit('DRAW', data, broadcast=True)
-
-
-@socketio.on('DRAW_BEGIN_PATH')
-def draw_begin_path():
-    emit('DRAW_BEGIN_PATH', broadcast=True)
 
 
 @socketio.on('drawing')

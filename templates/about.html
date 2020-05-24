@@ -1,217 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&family=Nova+Mono&display=swap"
-        rel="stylesheet">
-    <link rel='icon' href="{{ url_for('static', filename='favicon.png') }}"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&family=Nova+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" />
 
     <title>Fabric</title>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <style>
-        body {
-            font-family: 'Fira Code', monospace;
-        }
+      body {
+        font-family: "Fira Code", monospace;
+      }
 
-        nav {
-            font-family: 'Nova Mono', monospace;
-            background: rgb(33, 148, 249);
-            background: linear-gradient(90deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
-        }
+      nav {
+        font-family: "Nova Mono", monospace;
+        background: rgb(33, 148, 249);
+        background: linear-gradient(
+          90deg,
+          rgba(33, 148, 249, 1) 0%,
+          rgba(181, 76, 255, 1) 100%
+        );
+      }
 
-        .navbar-brand {
-            font-size: 2.5rem;
-        }
+      .navbar-brand {
+        font-size: 2.5rem;
+      }
 
-        .navbar-light .navbar-nav .nav-link {
-            color: white;
-            font-size: 2rem;
-            margin-right: 20px;
-        }
+      .navbar-light .navbar-nav .nav-link {
+        color: white;
+        font-size: 2rem;
+        margin-right: 20px;
+      }
 
-        .navbar-light .navbar-nav .nav-link:hover {
-            color: white;
-            margin-right: 20px;
-        }
+      .navbar-light .navbar-nav .nav-link:hover {
+        color: white;
+        margin-right: 20px;
+      }
 
-        .active {
-            color: white !important;
-        }
+      .active {
+        color: white !important;
+      }
 
-        .navbar-light .navbar-brand:focus,
-        .navbar-light .navbar-brand {
-            color: white;
-        }
+      .navbar-light .navbar-brand:focus,
+      .navbar-light .navbar-brand {
+        color: white;
+      }
 
-        .navbar-light .navbar-brand:focus,
-        .navbar-light .navbar-brand:hover {
-            color: white;
-        }
+      .navbar-light .navbar-brand:focus,
+      .navbar-light .navbar-brand:hover {
+        color: white;
+      }
 
-        .parallelogram-blue {
-            width: 400px;
-            height: 250px;
-            transform: skew(20deg);
-            background: #48a9ffff;
-            margin-left: 10vw;
-            margin-top: 20vh;
-            margin-right: 0;
-        }
+      .parallelogram-blue {
+        width: 400px;
+        height: 250px;
+        transform: skew(20deg);
+        background: #48a9ffff;
+        margin-left: 10vw;
+        margin-top: 20vh;
+        margin-right: 0;
+      }
 
-        .parallelogram-purple {
-            width: 400px;
-            height: 250px;
-            transform: skew(20deg);
-            background: #b042ff7b;
-            margin-left: 15vw;
-            margin-top: -200px;
-            margin-right: 0;
-        }
+      .parallelogram-purple {
+        width: 400px;
+        height: 250px;
+        transform: skew(20deg);
+        background: #b042ff7b;
+        margin-left: 15vw;
+        margin-top: -200px;
+        margin-right: 0;
+      }
 
-        .main-text {
-            width: 400px;
-            height: 200px;
-            background: white;
-            margin-top: -250px;
-            margin-right: 10vw;
-            float: right;
-            text-align: center;
-            border-radius: 30px;
-            box-shadow: 5px 10px 18px #888888;
-            padding: 20px;
-        }
+      .main-text {
+        width: 400px;
+        height: 200px;
+        background: white;
+        margin-top: -250px;
+        margin-right: 10vw;
+        float: right;
+        text-align: center;
+        border-radius: 30px;
+        box-shadow: 5px 10px 18px #888888;
+        padding: 20px;
+      }
 
-        .main-text h1 {
-            margin: auto;
-            margin-top: auto;
-        }
+      .main-text h1 {
+        margin: auto;
+        margin-top: auto;
+      }
 
-        .session-btn {
-            border: none;
-            background-color: #48a9ffff;
-            background: linear-gradient(90deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
-            color: white;
-            width: 100%;
-            font-size: 2rem;
-            border-radius: 20px;
-        }
+      .session-btn {
+        border: none;
+        background-color: #48a9ffff;
+        background: linear-gradient(
+          90deg,
+          rgba(33, 148, 249, 1) 0%,
+          rgba(181, 76, 255, 1) 100%
+        );
+        color: white;
+        width: 100%;
+        font-size: 2rem;
+        border-radius: 20px;
+      }
 
-        .session-btn:hover {
-            box-shadow: 5px 10px 20px #888888;
-        }
+      .session-btn:hover {
+        box-shadow: 5px 10px 20px #888888;
+      }
 
-        .btn-gradient {
-            background: linear-gradient(90deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
-        }
+      .btn-gradient {
+        background: linear-gradient(
+          90deg,
+          rgba(33, 148, 249, 1) 0%,
+          rgba(181, 76, 255, 1) 100%
+        );
+      }
 
-        .gradient {
-            background: linear-gradient(90deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+      .gradient {
+        background: linear-gradient(
+          90deg,
+          rgba(33, 148, 249, 1) 0%,
+          rgba(181, 76, 255, 1) 100%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
 
-        ::placeholder {
-            color: white;
-            opacity: 1;
-        }
+      ::placeholder {
+        color: white;
+        opacity: 1;
+      }
 
-        /* width */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
+      /* width */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
 
-        /* Track */
-        ::-webkit-scrollbar-track {
-            background: transparent;
-            border-radius: 10px;
-        }
+      /* Track */
+      ::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 10px;
+      }
 
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-            background: #48a9ffff;
-            background: linear-gradient(180deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
-            border-radius: 10px;
-        }
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #48a9ffff;
+        background: linear-gradient(
+          180deg,
+          rgba(33, 148, 249, 1) 0%,
+          rgba(181, 76, 255, 1) 100%
+        );
+        border-radius: 10px;
+      }
 
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-            background: #48a9ffff;
-            background: linear-gradient(180deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
-            border-radius: 10px;
-        }
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #48a9ffff;
+        background: linear-gradient(
+          180deg,
+          rgba(33, 148, 249, 1) 0%,
+          rgba(181, 76, 255, 1) 100%
+        );
+        border-radius: 10px;
+      }
     </style>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">
-            <svg height="60" width="60">
-                <circle cx="30" cy="30" r="20" stroke="white" stroke-width="3" fill="none" />
-            </svg>FABRIC</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+      <a class="navbar-brand" href="#">
+        <svg height="60" width="60">
+          <circle
+            cx="30"
+            cy="30"
+            r="20"
+            stroke="white"
+            stroke-width="3"
+            fill="none"
+          /></svg
+        >FABRIC</a
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">HOME</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="/about">ABOUT</a>
-                </li>
-            </ul>
-        </div>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">HOME</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/about">ABOUT</a>
+          </li>
+        </ul>
+      </div>
     </nav>
 
     <div class="parallelogram-blue"></div>
     <div class="parallelogram-purple"></div>
 
     <div class="main-text">
-        <button class="session-btn">Start Session</button>
-        <h1>or</h1>
-        <button type="button" data-toggle="modal" data-target="#exampleModal" class="session-btn">Join Session</button>
+      <button class="session-btn">Start Session</button>
+      <h1>or</h1>
+      <button
+        type="button"
+        data-toggle="modal"
+        data-target="#exampleModal"
+        class="session-btn"
+      >
+        Join Session
+      </button>
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Enter session ID</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form>
-                    <div class="modal-body">
-                        <input type="text" id="fname" name="fname" style="width: 100%;"><br>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-primary" value="Join Session">
-                    </div>
-                </form>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Enter session ID</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form>
+            <div class="modal-body">
+              <input
+                type="text"
+                id="fname"
+                name="fname"
+                style="width: 100%;"
+              /><br />
             </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <input
+                type="submit"
+                class="btn btn-primary"
+                value="Join Session"
+              />
+            </div>
+          </form>
         </div>
+      </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
-    </script>
-</body>
-
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
