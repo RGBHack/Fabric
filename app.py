@@ -79,7 +79,7 @@ def create():
     def onclear():
         emit('clear_'+sessionid,broadcast=True)
         global sessions
-        session[sessionid]["data"] = []
+        sessions[sessionid]["data"] = []
 
     return redirect('/admin/'+sessionid+':'+password)
 
