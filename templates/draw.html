@@ -17,9 +17,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/canvas.css') }}" />
     <title>Fabric | Draw</title>
   </head>
-  <body>
-
-    <canvas class="whiteboard" style="border: 50px;"></canvas>
+  <body style="overflow: none !important;">
+    <canvas class="whiteboard" style="background-size: 100%; border: 50px; background-color: transparent; background-size:100%; background-position: center;background-repeat: no-repeat;"></canvas>
 
     <nav
       class="navbar navbar-expand-lg navbar-light bg-light"
@@ -191,19 +190,28 @@ tea {
 }
 
 </style>
-        <div style="border-radius: 0px;border-color: transparent; background-color: transparent;"><button class="color-picker" style="padding:0; border: none;"><img src="../static/wheel.png" style="width: 40px; height: 40px; margin: 0;"></button></div>
-        <div class="color red"></div>
-        <div class="color orange"></div>
-        <div class="color yellow"></div>
-        <div class="color green"></div>
-        <div class="color blue"></div>
-        <div class="color purple"></div>
-        <div class="erase" style="border-radius: 0px;border-color: white; background-color: white;"><button class="color white" style="padding:0; border: none;"><img src="../static/eraser.png" style="width: 40px; height: 40px; margin: 0;"></button></div>
+        <div style="border-radius: 0px;border-color: transparent; background-color: transparent;"><button class="color-picker" style="padding:0; border: none;" data-toggle="tooltip" data-placement="right" title="Color Picker"><img src="../static/wheel.png" style="width: 40px; height: 40px; margin: 0;"></button></div>
+        <div class="color red" data-toggle="tooltip" data-placement="right" title="Red"></div>
+        <div class="color orange" data-toggle="tooltip" data-placement="right" title="Orange"></div>
+        <div class="color yellow" data-toggle="tooltip" data-placement="right" title="Yellow"></div>
+        <div class="color green" data-toggle="tooltip" data-placement="right" title="Green"></div>
+        <div class="color blue" data-toggle="tooltip" data-placement="right" title="Blue"></div>
+        <div class="color purple" data-toggle="tooltip" data-placement="right" title="Purple"></div>
+        <div class="erase" style="border-radius: 0px;border-color: white; background-color: white;"><button class="color white" style="padding:0; border: none;"><img src="../static/eraser.png" style="width: 40px; height: 40px; margin: 0;" data-toggle="tooltip" data-placement="right" title="Eraser"></button></div>
         <div class="erase" style="border-radius: 0px;border-color: white; background-color: white;" data-toggle="modal"
-        data-target="#filePicker"><button class="color white" style="padding:0; border: none;"><img src="../static/upload.jpg" style="width: 40px; height: 40px; margin: 0;"></button></div>
+        data-target="#filePicker"><button class="color white" style="padding:0; border: none;"><img src="../static/upload.jpg" style="width: 40px; height: 40px; margin: 0;" data-toggle="tooltip" data-placement="right" title="Upload Image"></button></div>
+        <div class="erase" style="border-radius: 0px;border-color: white; background-color: white;"><button class="color white" style="padding:0; border: none;" data-toggle="tooltip" data-placement="right" title="Download Canvas"><a id="download" download="canvas.jpg" href="" onclick="download_img(this);"><img src="../static/download.png" style="width: 40px; height: 40px; margin: 0;"></a></button></div>
+        <script>
+          var canvas = document.getElementsByClassName("whiteboard")[0];
+          var ctx = canvas.getContext("2d");
+          download_img = function(el) {
+            var image = canvas.toDataURL("image/jpg");
+            el.href = image;
+          };
+        </script>
         <div class="clear" id="clear-btn" style="background-color: white;">
-          <div style="padding-top: 10px;">
-            <img src="../static/trashcan.png">
+          <div style="padding-top: 10px;" data-toggle="tooltip" data-placement="right" title="Clear Canvas">
+            <img src="../static/trashcan2.png">
           </div>
         </div>
         <div
@@ -213,7 +221,7 @@ tea {
           data-target="#exampleModal"
           style="background-color: white;"
         >
-          <div>
+          <div data-toggle="tooltip" data-placement="right" title="Session Info">
             <img src="https://img.icons8.com/fluent/48/000000/info.png" />
           </div>
         </div>
@@ -579,6 +587,9 @@ tea {
                 document.getElementsByClassName('whiteboard')[0].style.background = "url(" + data + ")"; 
               })
       })();
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();
+});
     </script>
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
