@@ -1,208 +1,453 @@
-<link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" />
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="{{ url_for('static', filename='favicon.png') }}" rel="icon">
+        <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+        <title></title>
+    </head>
+    <body>
+        <style>
+            /*! Pickr 1.6.0 MIT | https://github.com/Simonwep/pickr */
 
-I am viewing on {{ id }}
-
-<br />
-
-<style>
-    html,
-    body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
-    .colors {
-        position: fixed;
-    }
-
-    .color {
-        display: inline-block;
-        height: 48px;
-        width: 48px;
-    }
-
-    .color.black {
-        background-color: black;
-    }
-
-    .color.red {
-        background-color: red;
-    }
-
-    .color.green {
-        background-color: green;
-    }
-
-    .color.blue {
-        background-color: blue;
-    }
-
-    .color.yellow {
-        background-color: yellow;
-    }
-
-    .whiteboard {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
-    }
-</style>
-<canvas class="whiteboard"></canvas>
-
-<div class="colors">
-    <div class="color black"></div>
-    <div class="color red"></div>
-    <div class="color green"></div>
-    <div class="color blue"></div>
-    <div class="color yellow"></div>
-</div>
-
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
-    integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I="
-    crossorigin="anonymous"
-></script>
-<script>
-    (function () {
-        var socket = io();
-        var canvas = document.getElementsByClassName("whiteboard")[0];
-        var colors = document.getElementsByClassName("color");
-        var context = canvas.getContext("2d");
-
-        var current = {
-            color: "black",
-        };
-        var drawing = false;
-
-        canvas.addEventListener("mousedown", onMouseDown, false);
-        canvas.addEventListener("mouseup", onMouseUp, false);
-        canvas.addEventListener("mouseout", onMouseUp, false);
-        canvas.addEventListener("mousemove", throttle(onMouseMove, 10), false);
-
-        //Touch support for mobile devices
-        canvas.addEventListener("touchstart", onMouseDown, false);
-        canvas.addEventListener("touchend", onMouseUp, false);
-        canvas.addEventListener("touchcancel", onMouseUp, false);
-        canvas.addEventListener("touchmove", throttle(onMouseMove, 10), false);
-
-        for (var i = 0; i < colors.length; i++) {
-            colors[i].addEventListener("click", onColorUpdate, false);
-        }
-
-        socket.on("drawing", onDrawingEvent);
-
-        window.addEventListener("resize", onResize, false);
-        onResize();
-
-        function drawLine(x0, y0, x1, y1, color, emit) {
-            context.beginPath();
-            context.moveTo(x0, y0);
-            context.lineTo(x1, y1);
-            context.strokeStyle = color;
-            context.lineWidth = 2;
-            context.stroke();
-            context.closePath();
-
-            if (!emit) {
-                return;
+            .pickr {
+                position: relative;
+                overflow: visible;
+                transform: translateY(0)
             }
-            var w = canvas.width;
-            var h = canvas.height;
-
-            socket.emit("drawing", {
-                x0: x0 / w,
-                y0: y0 / h,
-                x1: x1 / w,
-                y1: y1 / h,
-                color: color,
-            });
-        }
-
-        function onMouseDown(e) {
-            drawing = true;
-            current.x = e.clientX || e.touches[0].clientX;
-            current.y = e.clientY || e.touches[0].clientY;
-        }
-
-        function onMouseUp(e) {
-            if (!drawing) {
-                return;
+            .pickr * {
+                box-sizing: border-box;
+                outline: none;
+                border: none;
+                -webkit-appearance: none
             }
-            drawing = false;
-            drawLine(
-                current.x,
-                current.y,
-                e.clientX || e.touches[0].clientX,
-                e.clientY || e.touches[0].clientY,
-                current.color,
-                true
-            );
-        }
-
-        function onMouseMove(e) {
-            if (!drawing) {
-                return;
+            .pickr .pcr-button {
+                position: relative;
+                height: 48px;
+                width: 48px;
+                padding: .5em;
+                cursor: pointer;
+                font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
+                background: url('data:image/svg+xml;utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" stroke="%2342445A" stroke-width="5px" stroke-linecap="round"><path d="M45,45L5,5"></path><path d="M45,5L5,45"></path></svg>') no-repeat 50%;
+                background-size: 0;
+                transition: all .3s
             }
-            drawLine(
-                current.x,
-                current.y,
-                e.clientX || e.touches[0].clientX,
-                e.clientY || e.touches[0].clientY,
-                current.color,
-                true
-            );
-            current.x = e.clientX || e.touches[0].clientX;
-            current.y = e.clientY || e.touches[0].clientY;
-        }
-
-        function onColorUpdate(e) {
-            current.color = e.target.className.split(" ")[1];
-        }
-
-        // limit the number of events per second
-        function throttle(callback, delay) {
-            var previousCall = new Date().getTime();
-            return function () {
-                var time = new Date().getTime();
-
-                if (time - previousCall >= delay) {
-                    previousCall = time;
-                    callback.apply(null, arguments);
+            .pickr .pcr-button:before {
+                background: url('data:image/svg+xml;utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path fill="white" d="M1,0H2V1H1V0ZM0,1H1V2H0V1Z"/><path fill="gray" d="M0,0H1V1H0V0ZM1,1H2V2H1V1Z"/></svg>');
+                background-size: .5em;
+                z-index: -1;
+                z-index: auto
+            }
+            .pickr .pcr-button:after, .pickr .pcr-button:before {
+                position: absolute;
+                content: "";
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            .pickr .pcr-button:after {
+                transition: background .3s;
+                background: currentColor
+            }
+            .pickr .pcr-button.clear {
+                background-size: 70%
+            }
+            .pickr .pcr-button.clear:before {
+                opacity: 0
+            }
+            .pickr .pcr-button.clear:focus {
+                box-shadow: 0 0 0 1px hsla(0, 0%, 100%, .85), 0 0 0 3px currentColor
+            }
+            .pickr .pcr-button.disabled {
+                cursor: not-allowed
+            }
+            .pcr-app *, .pickr * {
+                box-sizing: border-box;
+                outline: none;
+                border: none;
+                -webkit-appearance: none
+            }
+            .pcr-app button.pcr-active, .pcr-app button:focus, .pcr-app input.pcr-active, .pcr-app input:focus, .pickr button.pcr-active, .pickr button:focus, .pickr input.pcr-active, .pickr input:focus {
+                box-shadow: 0 0 0 1px hsla(0, 0%, 100%, .85), 0 0 0 3px currentColor
+            }
+            .pcr-app .pcr-palette, .pcr-app .pcr-slider, .pickr .pcr-palette, .pickr .pcr-slider {
+                transition: box-shadow .3s
+            }
+            .pcr-app .pcr-palette:focus, .pcr-app .pcr-slider:focus, .pickr .pcr-palette:focus, .pickr .pcr-slider:focus {
+                box-shadow: 0 0 0 1px hsla(0, 0%, 100%, .85), 0 0 0 3px rgba(0, 0, 0, .25)
+            }
+            .pcr-app {
+                position: fixed;
+                display: flex;
+                flex-direction: column;
+                z-index: 10000;
+                border-radius: .1em;
+                background: #fff;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity .3s, visibility 0s .3s;
+                font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
+                box-shadow: 0 .15em 1.5em 0 rgba(0, 0, 0, .1), 0 0 1em 0 rgba(0, 0, 0, .03);
+                left: 0;
+                top: 0
+            }
+            .pcr-app.visible {
+                transition: opacity .3s;
+                visibility: visible;
+                opacity: 1
+            }
+            .pcr-app .pcr-swatches {
+                display: flex;
+                flex-wrap: wrap;
+                margin-top: .75em
+            }
+            .pcr-app .pcr-swatches.pcr-last {
+                margin: 0
+            }
+            @supports (display:grid) {
+                .pcr-app .pcr-swatches {
+                    display: grid;
+                    align-items: center;
+                    grid-template-columns: repeat(auto-fit, 1.75em)
                 }
+            }
+            .pcr-app .pcr-swatches>button {
+                font-size: 1em;
+                position: relative;
+                width: calc(1.75em - 5px);
+                height: calc(1.75em - 5px);
+                border-radius: .15em;
+                cursor: pointer;
+                margin: 2.5px;
+                flex-shrink: 0;
+                justify-self: center;
+                transition: all .15s;
+                overflow: hidden;
+                background: transparent;
+                z-index: 1
+            }
+            .pcr-app .pcr-swatches>button:before {
+                position: absolute;
+                content: "";
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url('data:image/svg+xml;utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path fill="white" d="M1,0H2V1H1V0ZM0,1H1V2H0V1Z"/><path fill="gray" d="M0,0H1V1H0V0ZM1,1H2V2H1V1Z"/></svg>');
+                background-size: 6px;
+                border-radius: .15em;
+                z-index: -1
+            }
+            .pcr-app .pcr-swatches>button:after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: currentColor;
+                border: 1px solid rgba(0, 0, 0, .05);
+                border-radius: .15em;
+                box-sizing: border-box
+            }
+            .pcr-app .pcr-swatches>button:hover {
+                -webkit-filter: brightness(1.05);
+                filter: brightness(1.05)
+            }
+            .pcr-app .pcr-swatches>button:not(.pcr-active) {
+                box-shadow: none
+            }
+            .pcr-app .pcr-interaction {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                margin: 0 -.2em
+            }
+            .pcr-app .pcr-interaction>* {
+                margin: 0 .2em
+            }
+            .pcr-app .pcr-interaction input {
+                letter-spacing: .07em;
+                font-size: .75em;
+                text-align: center;
+                cursor: pointer;
+                color: #75797e;
+                background: #f1f3f4;
+                border-radius: .15em;
+                transition: all .15s;
+                padding: .45em .5em;
+                margin-top: .75em
+            }
+            .pcr-app .pcr-interaction input:hover {
+                -webkit-filter: brightness(.975);
+                filter: brightness(.975)
+            }
+            .pcr-app .pcr-interaction input:focus {
+                box-shadow: 0 0 0 1px hsla(0, 0%, 100%, .85), 0 0 0 3px rgba(66, 133, 244, .75)
+            }
+            .pcr-app .pcr-interaction .pcr-result {
+                color: #75797e;
+                text-align: left;
+                flex: 1 1 8em;
+                min-width: 8em;
+                transition: all .2s;
+                border-radius: .15em;
+                background: #f1f3f4;
+                cursor: text
+            }
+            .pcr-app .pcr-interaction .pcr-result::-moz-selection {
+                background: #4285f4;
+                color: #fff
+            }
+            .pcr-app .pcr-interaction .pcr-result::selection {
+                background: #4285f4;
+                color: #fff
+            }
+            .pcr-app .pcr-interaction .pcr-type.active {
+                color: #fff;
+                background: #4285f4
+            }
+            .pcr-app .pcr-interaction .pcr-cancel, .pcr-app .pcr-interaction .pcr-clear, .pcr-app .pcr-interaction .pcr-save {
+                width: auto;
+                color: #fff
+            }
+            .pcr-app .pcr-interaction .pcr-cancel:hover, .pcr-app .pcr-interaction .pcr-clear:hover, .pcr-app .pcr-interaction .pcr-save:hover {
+                -webkit-filter: brightness(.925);
+                filter: brightness(.925)
+            }
+            .pcr-app .pcr-interaction .pcr-save {
+                background: #4285f4
+            }
+            .pcr-app .pcr-interaction .pcr-cancel, .pcr-app .pcr-interaction .pcr-clear {
+                background: #f44250
+            }
+            .pcr-app .pcr-interaction .pcr-cancel:focus, .pcr-app .pcr-interaction .pcr-clear:focus {
+                box-shadow: 0 0 0 1px hsla(0, 0%, 100%, .85), 0 0 0 3px rgba(244, 66, 80, .75)
+            }
+            .pcr-app .pcr-selection .pcr-picker {
+                position: absolute;
+                height: 18px;
+                width: 18px;
+                border: 2px solid #fff;
+                border-radius: 100%;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none
+            }
+            .pcr-app .pcr-selection .pcr-color-chooser, .pcr-app .pcr-selection .pcr-color-opacity, .pcr-app .pcr-selection .pcr-color-palette {
+                position: relative;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                display: flex;
+                flex-direction: column;
+                cursor: grab;
+                cursor: -webkit-grab
+            }
+            .pcr-app .pcr-selection .pcr-color-chooser:active, .pcr-app .pcr-selection .pcr-color-opacity:active, .pcr-app .pcr-selection .pcr-color-palette:active {
+                cursor: grabbing;
+                cursor: -webkit-grabbing
+            }
+            .pcr-app[data-theme=classic] {
+                width: 28.5em;
+                max-width: 95vw;
+                padding: .8em
+            }
+            .pcr-app[data-theme=classic] .pcr-selection {
+                display: flex;
+                justify-content: space-between;
+                flex-grow: 1
+            }
+            .pcr-app[data-theme=classic] .pcr-selection .pcr-color-preview {
+                position: relative;
+                z-index: 1;
+                width: 2em;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                margin-right: .75em
+            }
+            .pcr-app[data-theme=classic] .pcr-selection .pcr-color-preview:before {
+                position: absolute;
+                content: "";
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url('data:image/svg+xml;utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path fill="white" d="M1,0H2V1H1V0ZM0,1H1V2H0V1Z"/><path fill="gray" d="M0,0H1V1H0V0ZM1,1H2V2H1V1Z"/></svg>');
+                background-size: .5em;
+                border-radius: .15em;
+                z-index: -1
+            }
+            .pcr-app[data-theme=classic] .pcr-selection .pcr-color-preview .pcr-last-color {
+                cursor: pointer;
+                transition: background-color .3s, box-shadow .3s;
+                border-radius: .15em .15em 0 0;
+                z-index: 2
+            }
+            .pcr-app[data-theme=classic] .pcr-selection .pcr-color-preview .pcr-current-color {
+                border-radius: 0 0 .15em .15em
+            }
+            .pcr-app[data-theme=classic] .pcr-selection .pcr-color-preview .pcr-current-color, .pcr-app[data-theme=classic] .pcr-selection .pcr-color-preview .pcr-last-color {
+                background: currentColor;
+                width: 100%;
+                height: 50%
+            }
+            .pcr-app[data-theme=classic] .pcr-selection .pcr-color-palette {
+                width: 100%;
+                height: 8em;
+                z-index: 1
+            }
+            .pcr-app[data-theme=classic] .pcr-selection .pcr-color-palette .pcr-palette {
+                flex-grow: 1;
+                border-radius: .15em
+            }
+            .pcr-app[data-theme=classic] .pcr-selection .pcr-color-palette .pcr-palette:before {
+                position: absolute;
+                content: "";
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url('data:image/svg+xml;utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path fill="white" d="M1,0H2V1H1V0ZM0,1H1V2H0V1Z"/><path fill="gray" d="M0,0H1V1H0V0ZM1,1H2V2H1V1Z"/></svg>');
+                background-size: .5em;
+                border-radius: .15em;
+                z-index: -1
+            }
+            .pcr-app[data-theme=classic] .pcr-selection .pcr-color-chooser, .pcr-app[data-theme=classic] .pcr-selection .pcr-color-opacity {
+                margin-left: .75em
+            }
+            .pcr-app[data-theme=classic] .pcr-selection .pcr-color-chooser .pcr-picker, .pcr-app[data-theme=classic] .pcr-selection .pcr-color-opacity .pcr-picker {
+                left: 50%;
+                transform: translateX(-50%)
+            }
+            .pcr-app[data-theme=classic] .pcr-selection .pcr-color-chooser .pcr-slider, .pcr-app[data-theme=classic] .pcr-selection .pcr-color-opacity .pcr-slider {
+                width: 8px;
+                flex-grow: 1;
+                border-radius: 50em
+            }
+            .pcr-app[data-theme=classic] .pcr-selection .pcr-color-chooser .pcr-slider {
+                background: linear-gradient(180deg, red, #ff0, #0f0, #0ff, #00f, #f0f, red)
+            }
+            .pcr-app[data-theme=classic] .pcr-selection .pcr-color-opacity .pcr-slider {
+                background: linear-gradient(180deg, transparent, #000), url('data:image/svg+xml;utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path fill="white" d="M1,0H2V1H1V0ZM0,1H1V2H0V1Z"/><path fill="gray" d="M0,0H1V1H0V0ZM1,1H2V2H1V1Z"/></svg>');
+                background-size: 100%, 50%
+            }
+            html,
+            body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            .colors {
+                position: fixed;
+            }
+
+            .clear {
+                height: 48px;
+                width: 48px;
+                background-color: black;
+                text-align: center;
+                margin: none;
+                color: white;
+            }
+
+            .whiteboard {
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                top: 0;
+            }
+
+            .color-picker {
+                width: 48px;
+                height: 48px;
+                border-radius: 0px;
+            }
+        </style>
+
+        <canvas class="whiteboard" style="border: 50px;"></canvas>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script> 
+        
+        <script>
+            (function () {
+            var socket = io();
+            var canvas = document.getElementsByClassName("whiteboard")[0];
+            var colors = document.getElementsByClassName("color");
+            var context = canvas.getContext("2d");
+
+            var current = {
+                color: "black",
             };
-        }
+            var drawing = false;
 
-        function onDrawingEvent(data) {
-            var w = canvas.width;
-            var h = canvas.height;
-            drawLine(
-                data.x0 * w,
-                data.y0 * h,
-                data.x1 * w,
-                data.y1 * h,
-                data.color
-            );
-        }
+            for (var i = 0; i < colors.length; i++) {
+                colors[i].addEventListener("click", onColorUpdate, false);
+            }
 
-        // make the canvas fill its parent
-        function onResize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-    })();
-</script>
-<!--<script src="https://cdn.jsdelivr.net/gh/over-engineer/Socket.io-whiteboard/lib/latest/whiteboard.js"
-        integrity="sha384-0SpYdGaHioGkmKzEXMXv+KuDDa9JxaQKrUyAnfocU3GxV8206NHFkT6qlRZh/Kpk"
-        crossorigin="anonymous"></script>
+            socket.on("drawing", onDrawingEvent);
 
-<script>
-        var socket = io();
-        const canvas = document.querySelector('canvas');
-        const whiteboard = new Whiteboard(canvas, socket);
-        window.whiteboard = whiteboard
-</script>-->
+            window.addEventListener("resize", onResize, false);
+            onResize();
+
+            function drawLine(x0, y0, x1, y1, color) {
+                context.beginPath();
+                context.moveTo(x0, y0);
+                context.lineTo(x1, y1);
+                context.strokeStyle = color;
+                context.lineWidth = 2;
+                context.stroke();
+                context.closePath();
+            }
+
+            // limit the number of events per second
+            function throttle(callback, delay) {
+                var previousCall = new Date().getTime();
+                return function () {
+                    var time = new Date().getTime();
+
+                    if (time - previousCall >= delay) {
+                        previousCall = time;
+                        callback.apply(null, arguments);
+                    }
+                };
+            }
+
+            function onDrawingEvent(data) {
+                var w = canvas.width;
+                var h = canvas.height;
+                drawLine(
+                    data.x0 * w,
+                    data.y0 * h,
+                    data.x1 * w,
+                    data.y1 * h,
+                    data.color
+                );
+            }
+
+            // make the canvas fill its parent
+            function onResize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            socket.on('clear',() => {
+                const context = canvas.getContext('2d');
+                context.clearRect(0, 0, canvas.width, canvas.height);
+            })
+
+            function clear () {
+                socket.emit('clear')
+            }
+
+            })();
+        </script>
+    </body>
+</html>

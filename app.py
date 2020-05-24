@@ -97,7 +97,9 @@ def onconnection():
 
 @socketio.on('clear')
 def onclear():
-    emit('clear')
+    emit('clear',broadcast=True)
+    global datas
+    datas = []
 
 
 if __name__ == '__main__':
