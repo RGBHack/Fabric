@@ -7,6 +7,7 @@ import random
 from flask_socketio import SocketIO, send, emit
 import json
 from profanityfilter import ProfanityFilter
+import string
 
 app = Flask(__name__)
 
@@ -68,9 +69,9 @@ def about():
 def create():
     global num
     num += 1
-    num2 = random.randrange(99999)
-    password = str(random.randrange(99999999999))
-    sessionid = str(num)+str(num2)
+    num2 = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+    password = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15))
+    sessionid = str(num)+num2
     sessions[sessionid] = {"session": sessionid, "password": password, "data": [], "messages": []}
     @socketio.on('drawing_'+sessionid+':'+password)
     def drawing(data):
