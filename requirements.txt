@@ -5,4 +5,4 @@ gunicorn
 Flask-SocketIO
 eventlet
 gevent-websocket
-profanity_filter
+profanityfilter

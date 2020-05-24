@@ -6,7 +6,7 @@ from werkzeug.routing import BaseConverter
 import random
 from flask_socketio import SocketIO, send, emit
 import json
-from profanity_filter import ProfanityFilter
+from profanityfilter import ProfanityFilter
 
 app = Flask(__name__)
 
