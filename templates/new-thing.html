@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="{{ url_for('static', filename='favicon.png') }}" rel="icon" />
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&family=Nova+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../static/css/style.css" />
+    <link rel="stylesheet" href="../../static/css/canvas.css" />
+    <title>Fabric | Draw</title>
+    <style>
+        * {box-sizing: border-box;}
+
+/* Button used to open the chat form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+/* The popup chat - hidden by default */
+.chat-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+  margin-bottom: 15px;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input */
+.form-container input {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+  color: black;
+  resize: none;
+}
+
+#messagebox { height: 150px; overflow: scroll; }
+
+/* When the input gets focus, do something */
+.form-container input:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.form-container input::placeholder {
+  color: black;
+}
+
+/* Set a style for the submit/send button */
+.form-container .btn {
+    background: #48a9ffff;
+    background: linear-gradient(
+      90deg,
+      rgba(33, 148, 249, 1) 0%,
+      rgba(181, 76, 255, 1) 100%
+    );
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 48%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+stu {
+    color: rgba(33, 148, 249, 1);
+}
+
+tea {
+    color: rgba(181, 76, 255, 1);
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+    background: rgb(113, 113, 113);
+    background: linear-gradient(
+      180deg,
+      rgb(113, 113, 113) 0%,
+      rgb(113, 113, 113) 100%
+    );
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+    </style>
+  </head>
+  <body>
+    <canvas class="whiteboard" style="border: 50px;"></canvas>
+
+    <nav
+      class="navbar navbar-expand-lg navbar-light bg-light"
+      style="height: 8vh;"
+    >
+      <a class="navbar-brand" href="/">
+        FABRIC
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">HOME</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/about">ABOUT</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="colors">
+      <div class="color-picker" style="border-radius: 0px;"></div>
+      <div class="clear" id="clear-btn">
+          <div style="padding-top: 10px;">
+        Clear
+        </div>
+
+      </div>
+    </div>
+
+    <button class="open-button" onclick="document.getElementById('myForm').style.display = 'block';">Chat</button>
+
+<div class="chat-popup" id="myForm">
+  <form class="form-container">
+    <h1>Chat</h1>
+
+    <div id="messagebox">
+        <b><stu>Me</stu>: hi</b><br>
+        <b><tea>Instructor</tea>: hi</b><br>
+        <b><stu>Me</stu>: hi</b><br>
+        <b><tea>Instructor</tea>: hi</b><br>
+        <b><stu>Me</stu>: hi</b><br>
+        <b><tea>Instructor</tea>: hi</b><br>
+        <b><stu>Me</stu>: hi</b><br>
+        <b><tea>Instructor</tea>: hi</b><br>
+        <b><stu>Me</stu>: hi</b><br>
+        <b><tea>Instructor</tea>: hi</b><br>
+        <b><stu>Me</stu>: hi</b><br>
+        <b><tea>Instructor</tea>: hi</b><br>
+    </div>
+    <input placeholder="Type message..." name="msg" required></input>
+<div style="display:inline;">
+    <button type="submit" class="btn">Send</button>
+    <button type="button" class="btn cancel" onclick="document.getElementById('myForm').style.display = 'none';">Close</button>
+  </div>
+  </form>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+
+    <script src="{{ url_for('static', filename='js/draw.js') }}"></script> 
+    <!-- try that -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

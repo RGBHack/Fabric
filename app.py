@@ -81,6 +81,12 @@ def create():
         global sessions
         sessions[sessionid]["data"] = []
 
+    @socketio.on('chat_'+sessionid)
+    def chat(data):
+        emit('chat_'+sessionid,data,broadcast=True)
+        global sessions
+        sessions[sessionid]["messages"].append(data)
+
     return redirect('/admin/'+sessionid+':'+password)
 
 @socketio.on('connecteda')
@@ -88,6 +94,8 @@ def onconnection(data):
     global sessions
     for i in sessions[data]["data"]:
         emit('drawing_'+data, i)
+    for i in sessions[data]["messages"]:
+        emit("chat_"+data, i)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=int(os.environ.get('PORT', 5004)))

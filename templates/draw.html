@@ -13,8 +13,8 @@
       href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&family=Nova+Mono&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../static/css/style.css" />
-    <link rel="stylesheet" href="../static/css/canvas.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/canvas.css') }}" />
     <title>Fabric | Draw</title>
   </head>
   <body>
@@ -52,19 +52,196 @@
       </div>
     </nav>
 
-    <div class="colors">
-      <div class="color-picker" style="border-radius: 0px;"></div>
-      <div class="clear" id="clear-btn">
+    <div>
+      <div class="colors">
+        <style>
+        
+.color {
+  height: 48px;
+  width: 48px;
+}
+
+.color.black { background-color: black; }
+.color.red { background-color: red; }
+.color.green { background-color: green; }
+.color.blue { background-color: blue; }
+.color.yellow { background-color: yellow; }
+.color.purple { background-color: purple; }
+.color.orange { background-color: orange; }
+
+
+* {box-sizing: border-box;}
+
+/* Button used to open the chat form - fixed at the bottom of the page */
+.open-button {
+    background-color: #48a9ffff;
+  background: linear-gradient(
+    90deg,
+    rgba(33, 148, 249, 1) 0%,
+    rgba(181, 76, 255, 1) 100%
+  );
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.chat-submit {
+    border-radius: 20px;
+    color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.chat-close {
+    border-radius: 20px;
+    color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* The popup chat - hidden by default */
+.chat-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+  margin-bottom: 15px;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input */
+.form-container input {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+  color: black;
+  resize: none;
+}
+
+#messagebox { height: 150px; overflow: scroll; }
+
+/* When the input gets focus, do something */
+.form-container input:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.form-container input::placeholder {
+  color: black;
+}
+
+/* Set a style for the submit/send button */
+.form-container .btn {
+    background: #48a9ffff;
+    background: linear-gradient(
+      90deg,
+      rgba(33, 148, 249, 1) 0%,
+      rgba(181, 76, 255, 1) 100%
+    );
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 48%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+stu { 
+    color: rgba(33, 148, 249, 1);
+}
+
+tea {
+    color: rgba(181, 76, 255, 1);
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+    background: rgb(113, 113, 113);
+    background: linear-gradient(
+      180deg,
+      rgb(113, 113, 113) 0%,
+      rgb(113, 113, 113) 100%
+    );
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+</style>
+        <div style="border-radius: 0px;border-color: white; background-color: white;"><button class="color-picker" style="padding:0; border: none;"><img src="../static/wheel.png" style="width: 40px; height: 40px; margin: 0;"></button></div>
+        <div class="color red"></div>
+        <div class="color orange"></div>
+        <div class="color yellow"></div>
+        <div class="color green"></div>
+        <div class="color blue"></div>
+        <div class="color purple"></div>
+        <div class="clear" id="clear-btn" style="background-color: white;">
           <div style="padding-top: 10px;">
-        Clear
-        </div> 
+            <img src="../static/trashcan.png">
+          </div>
+        </div>
+        <div
+          class="clear"
+          id="clear-btn"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          style="background-color: white;"
+        >
+          <div>
+            <img src="https://img.icons8.com/fluent/48/000000/info.png" />
+          </div>
+        </div>
       </div>
-    <div class="clear" id="clear-btn" data-toggle="modal" data-target="#exampleModal">
-        <div style="padding-top: 10px;">
-        Info
-      </div> 
     </div>
+
+    <button class="open-button" onclick="document.getElementById('myForm').style.display = 'block';">Chat</button>
+
+<div class="chat-popup" id="myForm">
+  <form class="form-container" id="msg-form">
+    <h1>Chat</h1>
+    <div id="messagebox">
+        <!--<b><stu>Me</stu>: hi</b><br>
+        <b><tea>Instructor</tea>: hi</b><br>
+        <b><stu>Me</stu>: hi</b><br>
+        <b><tea>Instructor</tea>: hi</b><br>
+        <b><stu>Me</stu>: hi</b><br>
+        <b><tea>Instructor</tea>: hi</b><br>
+        <b><stu>Me</stu>: hi</b><br>
+        <b><tea>Instructor</tea>: hi</b><br>
+        <b><stu>Me</stu>: hi</b><br>
+        <b><tea>Instructor</tea>: hi</b><br>
+        <b><stu>Me</stu>: hi</b><br>
+        <b><tea>Instructor</tea>: hi</b><br>-->
     </div>
+    <input style="border-radius: 20px;" placeholder="Type message..." name="msg" id="msg-txt" required></input>
+<div style="display:inline;">
+    <button type="submit" class="btn chat-submit">Send</button>
+    <button type="button" class="btn cancel chat-close" onclick="document.getElementById('myForm').style.display = 'none';">Close</button>
+  </div>
+  </form>
+</div>
 
     <div
       class="modal fade"
@@ -89,24 +266,37 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-            <div class="modal-body">
-              <div>Invite Editors: <a href="https://fabric-2121.herokuapp.com/admin/{{ id }}:{{ password}}" target="_blank">fabric-2121.herokuapp.com/admin/{{ id }}:{{ password}}</a></div>
-              <div>Invite Viewers: <a href="https://fabric-2121.herokuapp.com/view/{{ id }}" target="_blank">fabric-2121.herokuapp.com/view/{{ id }}</a></div>
-              <div>Session ID: {{ id }}</div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
+          <div class="modal-body">
+            <div>
+              Invite Editors:
+              <a
+                href="https://fabric-2121.herokuapp.com/admin/{{ id }}:{{ password}}"
+                target="_blank"
+                >fabric-2121.herokuapp.com/admin/{{ id }}:{{ password}}</a
               >
-                Close
-              </button>
             </div>
+            <div>
+              Invite Viewers:
+              <a
+                href="https://fabric-2121.herokuapp.com/view/{{ id }}"
+                target="_blank"
+                >fabric-2121.herokuapp.com/view/{{ id }}</a
+              >
+            </div>
+            <div>Session ID: {{ id }}</div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
 
@@ -114,8 +304,9 @@
       const pickr = Pickr.create({
         el: ".color-picker",
         theme: "classic", // or 'monolith', or 'nano'
-        default: "#42445a",
+        default: "#000000",
         appClass: "custom-class",
+        useAsButton: true,
 
         swatches: [
           "rgba(244, 67, 54, 1)",
@@ -175,10 +366,14 @@
         canvas.addEventListener("touchcancel", onMouseUp, false);
         canvas.addEventListener("touchmove", throttle(onMouseMove, 10), false);
 
-        for (var i = 0; i < colors.length; i++) {
-          colors[i].addEventListener("click", onColorUpdate, false);
-        }
+        // for (var i = 0; i < colors.length; i++) {
+        //   colors[i].addEventListener("click", onColorUpdateP, false);
+        // }
         save[0].addEventListener("click", onColorUpdate, false);
+
+        for (var i = 0; i < colors.length; i++){
+          colors[i].addEventListener('click', onColorUpdateTwo, false);
+        }
 
         socket.on("drawing_{{ id }}", onDrawingEvent);
 
@@ -250,6 +445,15 @@
           current.color = pickr.getSelectedColor().toHEXA().toString();
         }
 
+
+        function onColorUpdateTwo(e) {
+          current.color = e.target.className.split(' ')[1];
+        }
+
+        // function onColorUpdate(e) {
+        //   current.color = e.target.className.split(' ')[1];
+        // }
+        
         // limit the number of events per second
         function throttle(callback, delay) {
           var previousCall = new Date().getTime();
@@ -289,7 +493,24 @@
           console.log("hi2");
           socket.emit("clear_{{ id }}:{{ password }}");
         };
-        socket.emit("connecteda","{{ id }}")
+        socket.emit("connecteda", "{{ id }}");
+        document.getElementById("msg-form").onsubmit = (e) => {
+            e.preventDefault()
+            socket.emit("chat_{{ id }}",{"person": "Instructor", "content" : document.getElementById("msg-txt").value})
+            document.getElementById("msg-txt").value = ''
+        }
+        socket.on("chat_{{ id }}", function (data) {
+            var person = data["person"]
+            var content = data["content"]
+            var div = document.getElementById("messagebox")
+            if (person === "Instructor") {
+                div.innerHTML += "<b><tea>"+person+"</tea>: "+content+"</b><br>"
+            }
+            else {
+                div.innerHTML += "<b><stu>"+person+"</stu>: "+content+"</b><br>"
+            }
+            div.scrollTop = div.scrollHeight;
+        })
       })();
     </script>
     <script
