@@ -6,27 +6,26 @@ from werkzeug.routing import BaseConverter
 
 app = Flask(__name__)
 
-class RegexConverter(BaseConverter):
-    def __init__(self, url_map, *items):
-        super(RegexConverter, self).__init__(url_map)
-        self.regex = items[0]
-app.url_map.converters['regex'] = RegexConverter
+# class RegexConverter(BaseConverter):
+#     def __init__(self, url_map, *items):
+#         super(RegexConverter, self).__init__(url_map)
+#         self.regex = items[0]
+# # app.url_map.converters['regex'] = RegexConverter
+# @app.route('/admin/<id>:<password>')
+# def workspace(id,password):
+#     print(id, file=sys.stdout)
+#     #if id is in database, then continue, otherwise redirect to 404 error
+#     return render_template('signup.html',id=id,password=password)
 
-@app.route('/admin/<id>:<password>')
-def workspace(id,password):
-    print(id, file=sys.stdout)
-    #if id is in database, then continue, otherwise redirect to 404 error
-    return render_template('signup.html',id=id,password=password)
-
-@app.route('/view/<id>')
-def view(id):
-    print(id, file=sys.stdout)
-    #if id is in database, then continue, otherwise redirect to 404 error
-    return render_template('signup.html',id=id)
+# @app.route('/view/<id>')
+# def view(id):
+#     print(id, file=sys.stdout)
+#     #if id is in database, then continue, otherwise redirect to 404 error
+#     return render_template('signup.html',id=id)
 
 def format_server_time():
-  server_time = time.localtime()
-  return time.strftime("%I:%M:%S %p", server_time)
+   server_time = time.localtime()
+   return time.strftime("%I:%M:%S %p", server_time)
 
 @app.route('/')
 def index():

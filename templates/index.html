@@ -59,10 +59,37 @@
         }
 
         .gradient {
-            background: linear-gradient(0deg, #48a9ffff, #b042ff7b);
+            background: linear-gradient(90deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
+            ;
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 10px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #48a9ffff;
+            background: linear-gradient(180deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
+            border-radius: 10px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #48a9ffff;
+            background: linear-gradient(180deg, rgba(33, 148, 249, 1) 0%, rgba(181, 76, 255, 1) 100%);
+            ;
+            border-radius: 10px;
         }
     </style>
 
@@ -92,7 +119,6 @@
     </nav>
 
     <div class="parallelogram-blue"></div>
-    <div style="height: 1px; display: inline-block;"></div>
     <div class="parallelogram-purple"></div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
