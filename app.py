@@ -95,6 +95,10 @@ def create():
         data["password"] = ""
         emit('chat_'+sessionid,data,broadcast=True)
         sessions[sessionid]["messages"].append(data)
+    @socketio.on("background_"+sessionid+"_"+password)
+    def background(data):
+        emit("background_"+sessionid,data,broadcast=True)
+        sessions[sessionid]["background"] = data
 
     return redirect('/admin/'+sessionid+':'+password)
 
@@ -105,6 +109,8 @@ def onconnection(data):
         emit('drawing_'+data, i)
     for i in sessions[data]["messages"]:
         emit("chat_"+data, i)
+    if "background" in sessions[data]:
+        emit("background_"+data,sessions[data]["background"])
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=int(os.environ.get('PORT', 5004)))

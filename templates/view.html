@@ -310,6 +310,9 @@
             }
             div.scrollTop = div.scrollHeight;
         })
+        socket.on('background_{{ id }}', function (data) {
+                document.getElementsByClassName('whiteboard')[0].style.background = "url(" + data + ")"; 
+              })
       })();
     </script>
 

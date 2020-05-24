@@ -324,23 +324,6 @@ tea {
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
       crossorigin="anonymous"
     ></script>
-            <script>
-              $('#validatedCustomFile').on('change',function(){
-                var fileName = $(this).val().split("\\").pop();
-                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-
-                var file = $(this)[0].files[0];
-                console.log(file)
-
-                var reader = new FileReader();
-                reader.onloadend = function(){
-                  document.getElementsByClassName('whiteboard')[0].style.background = "url(" + reader.result + ")"; 
-                }
-                if(file) {
-                  reader.readAsDataURL(file);
-                }
-              })
-          </script>
           <div class="modal-footer">
             <button
               type="button"
@@ -574,6 +557,27 @@ tea {
             }
             div.scrollTop = div.scrollHeight;
         })
+        $('#validatedCustomFile').on('change',function(){
+            var socket = io()
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+
+                var file = $(this)[0].files[0];
+                console.log(file)
+
+                var reader = new FileReader();
+                reader.onloadend = function(){
+                    var socket = io()
+                    console.log("emitted to reader w/ background_{{ id }}_{{ password }}")
+                    socket.emit("background_{{ id }}_{{ password }}",reader.result)
+                }
+                if(file) {
+                  reader.readAsDataURL(file);
+                }
+              })
+              socket.on('background_{{ id }}', function (data) {
+                document.getElementsByClassName('whiteboard')[0].style.background = "url(" + data + ")"; 
+              })
       })();
     </script>
     <script
