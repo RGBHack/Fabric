@@ -24,7 +24,7 @@ python app.py
 ## 💻 Try it out
 
 Video Demo: [https://youtu.be/q-6XG5c0LZ4](https://youtu.be/q-6XG5c0LZ4)<br>
-DevPost: [https://devpost.com/software/spark-k6txdh](https://devpost.com/software/spark-k6txdh)<br>
+DevPost: [https://devpost.com/software/spark-vsf4wn](https://devpost.com/software/spark-vsf4wn)<br>
 Slides Presentation: [bit.ly/fabric-slides](https://docs.google.com/presentation/d/1KUOVSg-vXgk2qqnBOHsNrnV4RrTOQe21Gyw9d69k5Ks/edit?usp=sharing)<br>
 
 ## 👨‍💻 Authors
