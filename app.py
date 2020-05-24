@@ -79,6 +79,10 @@ def draw(data):
 def draw_begin_path():
     emit('DRAW_BEGIN_PATH', broadcast=True)
 
+@socketio.on('drawing')
+def drawing(data):
+    emit('drawing',data, broadcast=True)
+
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=int(os.environ.get('PORT', 5004)))

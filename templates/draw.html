@@ -1,114 +1,114 @@
 <!DOCTYPE html>
 <html lang="zxx">
+
 <head>
     <link href="https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i" rel="stylesheet">
-    <link rel='icon' href="{{ url_for('static', filename='favicon.png') }}"/>
+    <link rel='icon' href="{{ url_for('static', filename='favicon.png') }}" />
 
     <center>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script type="text/javascript">
-                var canvas, ctx, flag = false,
-                    prevX = 0,
-                    currX = 0,
+            var canvas, ctx, flag = false,
+                prevX = 0,
+                currX = 0,
 
-                    prevY = 0,
-                    currY = 0,
-                    dot_flag = false;
+                prevY = 0,
+                currY = 0,
+                dot_flag = false;
 
-                var x = "black",
-                    y = 2;
+            var x = "black",
+                y = 2;
 
-                function init() {
-                    canvas = document.getElementById('can');
-                    ctx = canvas.getContext("2d");
-                    ctx.fillStyle = "rgb(255, 255, 255)";
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    w = canvas.width;
-                    h = canvas.height;
+            function init() {
+                canvas = document.getElementById('can');
+                ctx = canvas.getContext("2d");
+                ctx.fillStyle = "rgb(255, 255, 255)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                w = canvas.width;
+                h = canvas.height;
 
-                    canvas.addEventListener("mousemove", function (e) {
-                        findxy('move', e)
-                    }, false);
-                    canvas.addEventListener("mousedown", function (e) {
-                        findxy('down', e)
-                    }, false);
-                    canvas.addEventListener("mouseup", function (e) {
-                        findxy('up', e)
-                    }, false);
-                    canvas.addEventListener("mouseout", function (e) {
-                        findxy('out', e)
-                    }, false);
+                canvas.addEventListener("mousemove", function (e) {
+                    findxy('move', e)
+                }, false);
+                canvas.addEventListener("mousedown", function (e) {
+                    findxy('down', e)
+                }, false);
+                canvas.addEventListener("mouseup", function (e) {
+                    findxy('up', e)
+                }, false);
+                canvas.addEventListener("mouseout", function (e) {
+                    findxy('out', e)
+                }, false);
+            }
+
+            function color(obj) {
+                x = "black";
+
+            }
+
+            function draw() {
+                ctx.beginPath();
+                ctx.moveTo(prevX, prevY);
+                ctx.lineTo(currX, currY);
+                ctx.strokeStyle = x;
+                ctx.lineWidth = y;
+                ctx.stroke();
+                ctx.closePath();
+            }
+
+            function erase() {
+                ctx.clearRect(0, 0, w, h);
+                ctx.fillStyle = "rgb(255, 255, 255)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            function send() {
+                setInterval(function () {
+                    var Pic = document.getElementById("can").toDataURL("image/png");
+                    Pic = Pic.replace(/^data:image\/(png|jpg);base64,/, "")
+                    console.log(Pic)
+                    $.ajax({
+                        type: 'POST',
+                        url: './send',
+                        data: { imageBase64: Pic },
+                    });
+                }, 5000);
+            }
+
+            var interval = setInterval(send(), 1500);
+
+            function findxy(res, e) {
+                if (res == 'down') {
+                    prevX = currX;
+                    prevY = currY;
+                    currX = e.clientX - canvas.offsetLeft;
+                    currY = e.clientY - canvas.offsetTop;
+
+                    flag = true;
+                    dot_flag = true;
+                    if (dot_flag) {
+                        ctx.beginPath();
+                        ctx.fillStyle = x;
+                        ctx.fillRect(currX, currY, 2, 2);
+                        ctx.closePath();
+                        dot_flag = false;
+                    }
                 }
-
-                function color(obj) {
-                    x = "black";
-
+                if (res == 'up' || res == "out") {
+                    flag = false;
                 }
-
-                function draw() {
-                    ctx.beginPath();
-                    ctx.moveTo(prevX, prevY);
-                    ctx.lineTo(currX, currY);
-                    ctx.strokeStyle = x;
-                    ctx.lineWidth = y;
-                    ctx.stroke();
-                    ctx.closePath();
-                }
-
-                function erase() {
-                    ctx.clearRect(0, 0, w, h);
-                    ctx.fillStyle = "rgb(255, 255, 255)";
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                }
-
-                function send() {
-                    setInterval(function(){
-                        var Pic = document.getElementById("can").toDataURL("image/png");
-                        Pic = Pic.replace(/^data:image\/(png|jpg);base64,/, "")
-                        console.log(Pic)
-                        $.ajax({
-                            type: 'POST',
-                            url: './send',
-                            data: {imageBase64: Pic},
-                        });
-                    }, 5000);
-                }
-
-                var interval = setInterval(send(), 1500);
-
-                function findxy(res, e) {
-                    if (res == 'down') {
+                if (res == 'move') {
+                    if (flag) {
                         prevX = currX;
                         prevY = currY;
                         currX = e.clientX - canvas.offsetLeft;
                         currY = e.clientY - canvas.offsetTop;
-
-                        flag = true;
-                        dot_flag = true;
-                        if (dot_flag) {
-                            ctx.beginPath();
-                            ctx.fillStyle = x;
-                            ctx.fillRect(currX, currY, 2, 2);
-                            ctx.closePath();
-                            dot_flag = false;
-                        }
-                    }
-                    if (res == 'up' || res == "out") {
-                        flag = false;
-                    }
-                    if (res == 'move') {
-                        if (flag) {
-                            prevX = currX;
-                            prevY = currY;
-                            currX = e.clientX - canvas.offsetLeft;
-                            currY = e.clientY - canvas.offsetTop;
-                            draw();
-                        }
+                        draw();
                     }
                 }
-
-
+            }
         </script>
+
 <body onload="init()">
     I am editing room {{ id }} with password {{ password }}
     <canvas id="can" width="1000px" height="1000px" style="position:relative;top:10%;border:2px solid;"></canvas>
