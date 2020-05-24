@@ -6,4 +6,3 @@ Flask-SocketIO
 eventlet
 gevent-websocket
 profanity_filter
-https://github.com/explosion/spacy-models/releases/download/en_vectors_glove_md-1.0.0/en_vectors_glove_md-1.0.0.tar.gz
