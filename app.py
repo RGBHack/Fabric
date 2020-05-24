@@ -68,7 +68,7 @@ def create():
     num2 = random.randrange(99999)
     password = str(random.randrange(99999999))
     sessionid = str(num)+str(num2)
-    sessions[sessionid] = {"session": sessionid, "password": password, "data": []}
+    sessions[sessionid] = {"session": sessionid, "password": password, "data": [], "messages": []}
     @socketio.on('drawing_'+sessionid+':'+password)
     def drawing(data):
         global sessions
