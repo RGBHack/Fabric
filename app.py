@@ -35,10 +35,10 @@ def index():
     context = { 'server_time': format_server_time() }
     return render_template('index.html', context=context)
 
-@app.route('/draw')
+@app.route('/about')
 def draw():
     context = { 'server_time': format_server_time() }
-    return render_template('draw.html', context=context)
+    return render_template('about.html', context=context)
 
 if __name__ == '__main__':
     app.run(debug=True,port=int(os.environ.get('PORT', 5004)))
