@@ -25,7 +25,7 @@ python app.py
 
 Video Demo: [https://youtu.be/q-6XG5c0LZ4](https://youtu.be/q-6XG5c0LZ4)<br>
 DevPost: [https://devpost.com/software/spark-k6txdh](https://devpost.com/software/spark-k6txdh)<br>
-Slides Presentation: [https://docs.google.com/presentation/d/1KUOVSg-vXgk2qqnBOHsNrnV4RrTOQe21Gyw9d69k5Ks/edit?usp=sharing(https://docs.google.com/presentation/d/1KUOVSg-vXgk2qqnBOHsNrnV4RrTOQe21Gyw9d69k5Ks/edit?usp=sharing)<br>
+Slides Presentation: [https://docs.google.com/presentation/d/1KUOVSg-vXgk2qqnBOHsNrnV4RrTOQe21Gyw9d69k5Ks/edit?usp=sharing](https://docs.google.com/presentation/d/1KUOVSg-vXgk2qqnBOHsNrnV4RrTOQe21Gyw9d69k5Ks/edit?usp=sharing)<br>
 
 ## 👨‍💻 Authors
 
