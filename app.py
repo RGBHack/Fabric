@@ -62,7 +62,7 @@ def create():
     num2 = random.randrange(99999)
     password = str(random.randrange(99999999))
     sessionid = str(num)+str(num2)
-    sessions.append({"session":sessionid,"password":password})
+    sessions.append({"session": sessionid, "password": password})
     return redirect('/admin/'+sessionid+':'+password)
 
 
@@ -80,17 +80,24 @@ def draw(data):
 def draw_begin_path():
     emit('DRAW_BEGIN_PATH', broadcast=True)
 
+
 @socketio.on('drawing')
 def drawing(data):
     global datas
     datas.append(data)
-    emit('drawing',data, broadcast=True)
+    emit('drawing', data, broadcast=True)
+
 
 @socketio.on('connect')
 def onconnection():
     global datas
     for i in datas:
-        emit('drawing',i)
+        emit('drawing', i)
+
+
+@socketio.on('clear')
+def onclear():
+    emit('clear')
 
 
 if __name__ == '__main__':

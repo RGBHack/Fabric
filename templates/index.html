@@ -24,6 +24,7 @@
         <style>
             body {
                 font-family: "Fira Code", monospace;
+                overflow: hidden;
             }
 
             nav {
@@ -86,16 +87,12 @@
             }
 
             .main-text {
-                width: 450px;
-                height: 250px;
-                background: white;
-                margin-top: -280px;
-                margin-right: 10vw;
-                float: right;
                 text-align: center;
-                border-radius: 30px;
+                margin-right: 20%;
+                margin-left: 20%;
+                padding: 40px 80px;
                 box-shadow: 5px 10px 18px #888888;
-                padding: 30px;
+                border-radius: 20px;
             }
 
             .main-text h1 {
@@ -120,6 +117,8 @@
                 font-size: 2.5rem;
                 border-radius: 20px;
                 padding: 5px;
+                display: inline-block;
+                font-weight: bold;
             }
 
             .session-btn:hover {
@@ -189,10 +188,6 @@
             style="height: 8vh;"
         >
             <a class="navbar-brand" href="#">
-                <img
-                    src="{{ url_for('static', filename='favicon.png') }}"
-                    style="height: 35px; vertical-align: middle;"
-                />
                 FABRIC
             </a>
             <button
@@ -219,12 +214,13 @@
             </div>
         </nav>
 
-        <div class="parallelogram-blue"></div>
-        <div class="parallelogram-purple"></div>
+        <div style="text-align: center; margin: 40px auto;">
+            <img src="../static/logo.png" style="height: 15vh;"/>
+        </div>
 
         <div class="main-text">
             <button class="session-btn">Start Session</button>
-            <h1>or</h1>
+            <h1 style="font-weight: bold; margin: 10px;">or</h1>
             <button
                 type="button"
                 data-toggle="modal"
