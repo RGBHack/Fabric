@@ -64,6 +64,10 @@ def about():
     context = {'server_time': format_server_time()}
     return render_template('about.html', context=context)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return redirect('/404')
 
 @app.route('/create')
 def create():
