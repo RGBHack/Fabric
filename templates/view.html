@@ -18,9 +18,16 @@
     <title>Fabric | View</title>
   </head>
   <body>
+      
+        
 
-    <canvas class="whiteboard" style="border: 50px;"></canvas>
-
+      <style>
+        .bg-img {
+          background-repeat: no-repeat !important;
+          background-size: 100vw 100vh !important;
+        }
+        </style>
+    <canvas class="whiteboard bg-img" style="border: 50px;"></canvas>
     <nav
       class="navbar navbar-expand-lg navbar-light bg-light"
       style="height: 8vh;"
@@ -51,6 +58,17 @@
         </ul>
       </div>
     </nav>
+    <div class="colors" style="z-index:74839749328479238;">
+      <div class="erase" style="border-radius: 0px;border-color: white; background-color: white;">
+        <button class="color white" style="padding:0; border: none;" data-toggle="tooltip" data-placement="right" title="Download Canvas">
+          <a id="download" download="canvas.jpg" href="" onclick="download_img(this);">
+            <img src="../static/download.png" style="width: 40px; height: 40px; margin: 0;">
+          </a>
+        </button>
+      </div>
+    </div>
+
+    
 
 
     <style>
@@ -197,18 +215,6 @@
   <form class="form-container" id="msg-form">
     <h1>Chat</h1>
     <div id="messagebox">
-        <!--<b><stu>Me</stu>: hi</b><br>
-        <b><tea>Instructor</tea>: hi</b><br>
-        <b><stu>Me</stu>: hi</b><br>
-        <b><tea>Instructor</tea>: hi</b><br>
-        <b><stu>Me</stu>: hi</b><br>
-        <b><tea>Instructor</tea>: hi</b><br>
-        <b><stu>Me</stu>: hi</b><br>
-        <b><tea>Instructor</tea>: hi</b><br>
-        <b><stu>Me</stu>: hi</b><br>
-        <b><tea>Instructor</tea>: hi</b><br>
-        <b><stu>Me</stu>: hi</b><br>
-        <b><tea>Instructor</tea>: hi</b><br>-->
     </div>
     <input style="border-radius: 20px;" placeholder="Type message..." name="msg" id="msg-txt" required></input>
 <div style="display:inline;">
@@ -224,6 +230,13 @@
 
     <script>
       (function () {
+
+            var canvas = document.getElementsByClassName("whiteboard")[0];
+            var ctx = canvas.getContext("2d");
+            download_img = function(el) {
+              var image = canvas.toDataURL("image/jpg");
+              el.href = image;
+            };
         var socket = io();
         var canvas = document.getElementsByClassName("whiteboard")[0];
         var colors = document.getElementsByClassName("color");
@@ -234,9 +247,9 @@
         };
         var drawing = false;
 
-        for (var i = 0; i < colors.length; i++) {
+        /*for (var i = 0; i < colors.length; i++) {
           colors[i].addEventListener("click", onColorUpdate, false);
-        }
+        }*/
 
         socket.on("drawing_{{ id }}", onDrawingEvent);
 
@@ -314,6 +327,9 @@
                 document.getElementsByClassName('whiteboard')[0].style.background = "url(" + data + ")"; 
               })
       })();
+      $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+      });
     </script>
 
     <script

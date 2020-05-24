@@ -17,8 +17,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/canvas.css') }}" />
     <title>Fabric | Draw</title>
   </head>
-  <body style="overflow: none !important;">
-    <canvas class="whiteboard" style="background-size: 100%; border: 50px; background-color: transparent; background-size:100%; background-position: center;background-repeat: no-repeat;"></canvas>
+  <body style="overflow: hidden !important;">
+    <style>
+      .bg-img {
+        background-repeat: no-repeat !important;
+        background-size: 100vw 100vh !important;
+      }
+      </style>
+    <canvas class="whiteboard bg-img" style="background-size: 100%; border: 50px; background-color: transparent; background-size:100%; background-position: center;background-repeat: no-repeat;"></canvas>
 
     <nav
       class="navbar navbar-expand-lg navbar-light bg-light"
@@ -252,7 +258,7 @@ tea {
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content" >
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
               Session Info
@@ -587,9 +593,12 @@ tea {
                 document.getElementsByClassName('whiteboard')[0].style.background = "url(" + data + ")"; 
               })
       })();
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip();
-});
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+    $(document).ready(function(){
+        $("#exampleModal").modal('show');
+    });
     </script>
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
