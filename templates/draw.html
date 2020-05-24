@@ -68,6 +68,7 @@
 .color.yellow { background-color: yellow; }
 .color.purple { background-color: purple; }
 .color.orange { background-color: orange; }
+.color.white { background-color: white; }
 
 
 * {box-sizing: border-box;}
@@ -197,6 +198,7 @@ tea {
         <div class="color green"></div>
         <div class="color blue"></div>
         <div class="color purple"></div>
+        <div class="erase" style="border-radius: 0px;border-color: white; background-color: white;"><button class="color white" style="padding:0; border: none;"><img src="../static/eraser.png" style="width: 40px; height: 40px; margin: 0;"></button></div>
         <div class="clear" id="clear-btn" style="background-color: white;">
           <div style="padding-top: 10px;">
             <img src="../static/trashcan.png">
@@ -222,18 +224,6 @@ tea {
   <form class="form-container" id="msg-form">
     <h1>Chat</h1>
     <div id="messagebox">
-        <!--<b><stu>Me</stu>: hi</b><br>
-        <b><tea>Instructor</tea>: hi</b><br>
-        <b><stu>Me</stu>: hi</b><br>
-        <b><tea>Instructor</tea>: hi</b><br>
-        <b><stu>Me</stu>: hi</b><br>
-        <b><tea>Instructor</tea>: hi</b><br>
-        <b><stu>Me</stu>: hi</b><br>
-        <b><tea>Instructor</tea>: hi</b><br>
-        <b><stu>Me</stu>: hi</b><br>
-        <b><tea>Instructor</tea>: hi</b><br>
-        <b><stu>Me</stu>: hi</b><br>
-        <b><tea>Instructor</tea>: hi</b><br>-->
     </div>
     <input style="border-radius: 20px;" placeholder="Type message..." name="msg" id="msg-txt" required></input>
 <div style="display:inline;">
@@ -251,7 +241,7 @@ tea {
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
@@ -348,12 +338,15 @@ tea {
         var canvas = document.getElementsByClassName("whiteboard")[0];
         var colors = document.getElementsByClassName("color");
         var save = document.getElementsByClassName("pcr-save");
+        var eraser = document.getElementsByClassName("erase")[0];
         var context = canvas.getContext("2d");
 
         var current = {
           color: "black",
         };
         var drawing = false;
+
+        eraser.addEventListener("click", erase, false);
 
         canvas.addEventListener("mousedown", onMouseDown, false);
         canvas.addEventListener("mouseup", onMouseUp, false);
@@ -443,6 +436,10 @@ tea {
 
         function onColorUpdate(e) {
           current.color = pickr.getSelectedColor().toHEXA().toString();
+        }
+
+        function erase(e) {
+          current.color = "#ffffff"
         }
 
 

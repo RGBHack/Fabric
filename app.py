@@ -6,12 +6,15 @@ from werkzeug.routing import BaseConverter
 import random
 from flask_socketio import SocketIO, send, emit
 import json
+from profanity_filter import ProfanityFilter
 
 app = Flask(__name__)
 
 sessions = {}
 num = 0
 socketio = SocketIO(app)
+
+pf = ProfanityFilter()
 
 
 class RegexConverter(BaseConverter):
@@ -83,6 +86,8 @@ def create():
 
     @socketio.on('chat_'+sessionid)
     def chat(data):
+        data2 = pf.censor(data["content"])
+        data["content"] = data2
         emit('chat_'+sessionid,data,broadcast=True)
         global sessions
         sessions[sessionid]["messages"].append(data)
