@@ -5,11 +5,13 @@ import sys
 from werkzeug.routing import BaseConverter
 import random
 from flask_socketio import SocketIO
+import json
 
 app = Flask(__name__)
 
 rooms = []
 num = 0
+socketio = SocketIO(app)
 
 class RegexConverter(BaseConverter):
     def __init__(self, url_map, *items):
@@ -51,4 +53,4 @@ def create():
     
 
 if __name__ == '__main__':
-    app.run(debug=True,port=int(os.environ.get('PORT', 5004)))
+    socketio.run(debug=True,port=int(os.environ.get('PORT', 5004)))
