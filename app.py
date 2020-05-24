@@ -12,6 +12,7 @@ app = Flask(__name__)
 sessions = []
 num = 0
 socketio = SocketIO(app)
+datas = []
 
 
 class RegexConverter(BaseConverter):
@@ -81,7 +82,15 @@ def draw_begin_path():
 
 @socketio.on('drawing')
 def drawing(data):
+    global datas
+    datas.append(data)
     emit('drawing',data, broadcast=True)
+
+@socketio.on('connect')
+def onconnection():
+    global datas
+    for i in datas:
+        emit('drawing',i)
 
 
 if __name__ == '__main__':
