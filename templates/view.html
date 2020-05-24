@@ -514,7 +514,7 @@
           colors[i].addEventListener("click", onColorUpdate, false);
         }
 
-        socket.on("drawing", onDrawingEvent);
+        socket.on("drawing_{{ id }}", onDrawingEvent);
 
         window.addEventListener("resize", onResize, false);
         onResize();
@@ -560,7 +560,7 @@
           canvas.height = window.innerHeight;
         }
 
-        socket.on("clear", () => {
+        socket.on("clear_{{ id }}", () => {
           const context = canvas.getContext("2d");
           context.clearRect(0, 0, canvas.width, canvas.height);
         });
@@ -568,6 +568,7 @@
         function clear() {
           socket.emit("clear");
         }
+        socket.emit("connecteda","{{ id }}")
       })();
     </script>
 

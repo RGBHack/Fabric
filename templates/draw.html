@@ -502,7 +502,9 @@
     <div class="colors">
       <div class="color-picker" style="border-radius: 0px;"></div>
       <div class="clear" id="clear-btn">
+          <div style="padding-top: 10px;">
         Clear
+        </div> 
       </div>
     </div>
 
@@ -578,7 +580,7 @@
         }
         save[0].addEventListener("click", onColorUpdate, false);
 
-        socket.on("drawing", onDrawingEvent);
+        socket.on("drawing_{{ id }}", onDrawingEvent);
 
         window.addEventListener("resize", onResize, false);
         onResize();
@@ -598,7 +600,7 @@
           var w = canvas.width;
           var h = canvas.height;
 
-          socket.emit("drawing", {
+          socket.emit("drawing_{{ id }}:{{ password }}", {
             x0: x0 / w,
             y0: y0 / h,
             x1: x1 / w,
@@ -679,14 +681,15 @@
           canvas.height = window.innerHeight;
         }
 
-        socket.on("clear", () => {
+        socket.on("clear_{{ id }}", () => {
           const context = canvas.getContext("2d");
           context.clearRect(0, 0, canvas.width, canvas.height);
         });
         document.getElementById("clear-btn").onclick = () => {
           console.log("hi2");
-          socket.emit("clear");
+          socket.emit("clear_{{ id }}:{{ password }}");
         };
+        socket.emit("connecteda","{{ id }}")
       })();
     </script>
     <script

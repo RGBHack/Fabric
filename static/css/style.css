@@ -82,6 +82,10 @@ nav {
   font-size: 1.7rem !important;
 }
 
+.clear {
+    vertical-align: middle;
+}
+
 .session-btn {
   border: none;
   background-color: #48a9ffff;

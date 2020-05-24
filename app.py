@@ -12,7 +12,6 @@ app = Flask(__name__)
 sessions = {}
 num = 0
 socketio = SocketIO(app)
-datas = []
 
 
 class RegexConverter(BaseConverter):
@@ -70,34 +69,25 @@ def create():
     password = str(random.randrange(99999999))
     sessionid = str(num)+str(num2)
     sessions[sessionid] = {"session": sessionid, "password": password, "data": []}
+    @socketio.on('drawing_'+sessionid+':'+password)
+    def drawing(data):
+        global sessions
+        sessions[sessionid]["data"].append(data)
+        emit('drawing_'+sessionid, data, broadcast=True)
+
+    @socketio.on('clear_'+sessionid+':'+password)
+    def onclear():
+        emit('clear_'+sessionid,broadcast=True)
+        global sessions
+        session[sessionid]["data"] = []
+
     return redirect('/admin/'+sessionid+':'+password)
 
-
-@socketio.on('connection')
-def connection(socket):
-    print("Client #"+str(socket.id)+"Has connected")
-
-
-@socketio.on('drawing')
-def drawing(data):
-    global datas
-    datas.append(data)
-    emit('drawing', data, broadcast=True)
-
-
-@socketio.on('connect')
-def onconnection():
-    global datas
-    for i in datas:
-        emit('drawing', i)
-
-
-@socketio.on('clear')
-def onclear():
-    emit('clear',broadcast=True)
-    global datas
-    datas = []
-
+@socketio.on('connecteda')
+def onconnection(data):
+    global sessions
+    for i in sessions[data]["data"]:
+        emit('drawing_'+data, i)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=int(os.environ.get('PORT', 5004)))
