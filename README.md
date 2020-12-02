@@ -7,7 +7,6 @@
   <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   <img alt="Made with Python" src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg" />
   <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg">
-  <img alt="Heroku" src="http://heroku-shields.herokuapp.com/fabric-2121">
   <img alt="Maintained" src="https://img.shields.io/badge/Maintained-Yes-orange">
   <img alt="awesome" src="https://img.shields.io/badge/awesome-yes-blue">
 </p>
