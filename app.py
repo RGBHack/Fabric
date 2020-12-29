@@ -9,7 +9,13 @@ import json
 from profanityfilter import ProfanityFilter
 import string
 
+keyfile = os.environ.get('KEYFILE')
+certfile = os.environ.get('CERTFILE')
+domain = os.environ.get('DOMAIN')
+
 app = Flask(__name__)
+if domain != None:
+  app["SERVER_NAME"] = domain
 
 sessions = {}
 num = 0
@@ -118,4 +124,7 @@ def onconnection(data):
         emit("background_"+data,sessions[data]["background"])
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, port=int(os.environ.get('PORT', 5004)))
+    if keyfile != None and certfile != None:
+      socketio.run(app, host='0.0.0.0', port=443, debug=True, keyfile=keyfile, certfile=certfile)
+    else:
+      socketio.run(app, host='0.0.0.0', debug=True, port=80)
