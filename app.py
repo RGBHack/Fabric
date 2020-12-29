@@ -7,7 +7,10 @@ import random
 from flask_socketio import SocketIO, send, emit
 import json
 from profanityfilter import ProfanityFilter
+from dotenv import load_dotenv
 import string
+
+load_dotenv()
 
 keyfile = os.environ.get('KEYFILE')
 certfile = os.environ.get('CERTFILE')

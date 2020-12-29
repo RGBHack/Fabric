@@ -6,3 +6,4 @@ Flask-SocketIO
 eventlet
 gevent-websocket
 profanityfilter
+python-dotenv
