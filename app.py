@@ -18,7 +18,7 @@ domain = os.environ.get('DOMAIN')
 
 app = Flask(__name__)
 if domain != None:
-  app["SERVER_NAME"] = domain
+  app.config["SERVER_NAME"] = domain
 
 sessions = {}
 num = 0
