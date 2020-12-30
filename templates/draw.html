@@ -5,12 +5,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-sacle=1, maximum-scale=1, user-scalable=no">
 <style>
-  /*html, body {
+  html, body {
     width: 100% !important; height: 100% !important;
     overflow: hidden !important;
     touch-action: none !important;
     position: fixed !important;
-}*/
+  }
 
 </style>
 
@@ -221,7 +221,6 @@ tea {
         data-target="#filePicker"><button class="color white" style="padding:0; border: none;"><img src="../static/upload.jpg" style="width: 40px; height: 40px; margin: 0;" data-toggle="tooltip" data-placement="right" title="Upload Image"></button></div>
         <div class="erase" style="border-radius: 0px;border-color: white; background-color: white;"><button class="color white" style="padding:0; border: none;" data-toggle="tooltip" data-placement="right" title="Download Canvas"><a id="download" download="canvas.jpg" href="" onclick="download_img(this);"><img src="../static/download.png" style="width: 40px; height: 40px; margin: 0;"></a></button></div>
         <script>
-          //document.body.ontouchmove = (e) => { e.preventDefault(); return false; };
           var canvas = document.getElementsByClassName("whiteboard")[0];
           var ctx = canvas.getContext("2d");
           download_img = function(el) {
